@@ -1,10 +1,9 @@
 IMAGE=ai-controller
 TAG=1.0
+POD=$(IMAGE)
 
 deploy:
 	docker build -t $(IMAGE):$(TAG) .
-	kind load docker-image $(IMAGE):$(TAG) --name ai
+	k3d image import $(IMAGE):$(TAG) -c ai
 	kubectl apply -f deployment.yaml
-
-restart:
-	kubectl rollout restart deployment $(IMAGE)
+	kubectl rollout restart deployment $(POD)
